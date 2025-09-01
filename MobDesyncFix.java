@@ -44,7 +44,6 @@ public final class MobDesyncFix extends JavaPlugin {
     }
 
     private void handlePlayerCommand(Player player, String[] args) {
-        // Placeholder for future logic for finding mobs
         boolean fixableMobFound = searchForFixableMob(player);
 
         if (!fixableMobFound) {
@@ -55,7 +54,6 @@ public final class MobDesyncFix extends JavaPlugin {
     }
 
     private boolean searchForFixableMob(Player player) {
-        // Add more complex logic later if desired
         Bukkit.getScheduler().runTaskLater(this, () ->
                 player.sendMessage(colorize("&7Searching for mobs...")), 10L);
         return false;
@@ -80,7 +78,6 @@ public final class MobDesyncFix extends JavaPlugin {
     }
 
     private void registerCommands() {
-        // Could be expanded with dynamic registration in future
         logWithPrefix(Level.FINE, "Registering commands...");
     }
 }
