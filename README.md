@@ -10,9 +10,13 @@ Source code updated 2025-09-02
 
 
 PLEASE OWNER OF A.S.S JUST LOOK AT THE PLUGIN ITS A NEED FOR HIGH PING PLAYERS LIKE ME.
+
 I can barely use netities.
+
 I can not elytra fly at all
+
 Severe desyncs happen where only server restarts fix it.
+
 Godmode desyncs happen over and over again when entering and leaving dimensions.
 
 I put the source code in the .java file you can look trough it by yourself.
