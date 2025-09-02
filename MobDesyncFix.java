@@ -2,9 +2,13 @@ package me.kapt3nen.mobdesyncfix;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -20,7 +24,6 @@ public final class MobDesyncFix extends JavaPlugin {
     @Override
     public void onEnable() {
         logWithPrefix(Level.INFO, "MobDesyncFix has been enabled!");
-        registerCommands();
     }
 
     @Override
@@ -34,7 +37,7 @@ public final class MobDesyncFix extends JavaPlugin {
             SenderType type = determineSenderType(sender);
 
             switch (type) {
-                case PLAYER -> handlePlayerCommand((Player) sender, args);
+                case PLAYER -> handlePlayerCommand((Player) sender);
                 case CONSOLE -> sender.sendMessage(colorize("&cThis command cannot be run from console!"));
                 default -> sender.sendMessage(colorize("&cUnknown sender type detected!"));
             }
@@ -43,20 +46,33 @@ public final class MobDesyncFix extends JavaPlugin {
         return false;
     }
 
-    private void handlePlayerCommand(Player player, String[] args) {
-        boolean fixableMobFound = searchForFixableMob(player);
+    private void handlePlayerCommand(Player player) {
+        Entity vehicle = player.getVehicle();
 
-        if (!fixableMobFound) {
-            player.sendMessage(colorize("&eNo fixable mob found."));
-        } else {
-            player.sendMessage(colorize("&aFixable mob found and synced!"));
+        if (vehicle == null) {
+            player.sendMessage(colorize("&eYou are not riding any entity."));
+            return;
         }
-    }
 
-    private boolean searchForFixableMob(Player player) {
-        Bukkit.getScheduler().runTaskLater(this, () ->
-                player.sendMessage(colorize("&7Searching for mobs...")), 10L);
-        return false;
+        EntityType type = vehicle.getType();
+        Location loc = vehicle.getLocation();
+
+        // Remove the old entity
+        vehicle.remove();
+
+        // Spawn a fresh one of the same type
+        Entity newEntity = loc.getWorld().spawnEntity(loc, type);
+
+        if (newEntity instanceof LivingEntity livingEntity) {
+            // Optional: copy health, etc. if needed
+            livingEntity.setCustomName(vehicle.getName());
+        }
+
+        // Mount player onto the new entity
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            newEntity.addPassenger(player);
+            player.sendMessage(colorize("&aYour rideable mob has been replaced and resynced!"));
+        }, 1L);
     }
 
     private SenderType determineSenderType(CommandSender sender) {
@@ -75,9 +91,5 @@ public final class MobDesyncFix extends JavaPlugin {
 
     private String colorize(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
-    private void registerCommands() {
-        logWithPrefix(Level.FINE, "Registering commands...");
     }
 }
