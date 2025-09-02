@@ -20,3 +20,6 @@ Severe desyncs happen where only server restarts fix it.
 Godmode desyncs happen over and over again when entering and leaving dimensions.
 
 I put the source code in the .java file you can look trough it by yourself.
+
+
+The plugin works in the way that it kills the oroginal mob wich caused the desync. Then replaces it. This will delete the desynced mob and in that process eliminate the desync
