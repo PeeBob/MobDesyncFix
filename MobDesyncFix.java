@@ -57,18 +57,14 @@ public final class MobDesyncFix extends JavaPlugin {
         EntityType type = vehicle.getType();
         Location loc = vehicle.getLocation();
 
-        // Remove the old entity
         vehicle.remove();
 
-        // Spawn a fresh one of the same type
         Entity newEntity = loc.getWorld().spawnEntity(loc, type);
 
         if (newEntity instanceof LivingEntity livingEntity) {
-            // Optional: copy health, etc. if needed
             livingEntity.setCustomName(vehicle.getName());
         }
 
-        // Mount player onto the new entity
         Bukkit.getScheduler().runTaskLater(this, () -> {
             newEntity.addPassenger(player);
             player.sendMessage(colorize("&aYour rideable mob has been replaced and resynced!"));
