@@ -6,6 +6,7 @@ The full release comes with an auto resync function. Prevent desyncing almost en
 
 DOWNLOAD FROM RELEASES!
 UPDATED 2025-09-01
+Source code updated 2025-09-02
 
 
 PLEASE OWNER OF A.S.S JUST LOOK AT THE PLUGIN ITS A NEED FOR HIGH PING PLAYERS LIKE ME.
